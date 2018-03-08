@@ -1,4 +1,4 @@
-For HLT rate, timing and efficiency studies. 
+For HLT rate, timing and efficiency and integration studies. 
 
 Commands for each step ----
 
@@ -32,3 +32,14 @@ python config_makeBatchJobs.py
 ./sub_total.jobb
 
 python config_mergeOutputs.py
+
+## 2. HLT Timing :
+(using Ephemeral 2017E dataset)
+
+hltGetConfiguration /users/oozcelik/Displaced-Jpsi/HLT/V4 --globaltag 100X_dataRun2_relval_ForTSG_v1 --input root://eoscms.cern.ch//eos/cms/tier0/store/data/Run2017E/EphemeralHLTPhysics1/RAW/v1/000/304/777/00000/00175E91-D0AD-E711-A24F-02163E01451E.root --data --process TIMING --offline --l1 L1Menu_Collisions2017_v4_m6 --unprescale --max-events 100 --setup /dev/CMSSW_10_0_0/GRun --no-output --timing > hlt.py
+
+cmsRun hlt.py >& full.log
+cmsRun harvesting.py >& harvesting.log
+root -l DQM_V0001_R000304777__HLT__FastTimerService__All.root
+
+and go to QMData/Run 304777/HLT/Run summary/TimerService/process TIMING paths/path HLT_Mu3_PFJet200CSV_1p5_v15/ directory, you can explore, e.g, the path time real plot and the module timing plot of that path
