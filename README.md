@@ -48,6 +48,7 @@ and go to QMData/Run 304777/HLT/Run summary/TimerService/process TIMING paths/pa
 
 -- to get the updated L1T menu circulated July 24th (L1Menu_Collisions2017_dev_r9) --
 (it might be run w/o L1 menu, not so crucial.)
+
 git clone https://github.com/cms-l1-dpg/2017-pp-menu-dev -b 2017-07-24 ../2017-pp-menu-dev
 mkdir -p L1Trigger/L1TGlobal/data/Luminosity/startup
 cp ../2017-pp-menu-dev/Apr12/*.xml L1Trigger/L1TGlobal/data/Luminosity/startup/
