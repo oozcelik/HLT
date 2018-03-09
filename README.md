@@ -1,4 +1,4 @@
-For HLT rate, timing and efficiency and integration studies. 
+## 2018 HLT rate, timing and efficiency and integration studies. 
 
 Commands for each step ----
 
@@ -43,3 +43,15 @@ cmsRun harvesting.py >& harvesting.log
 root -l DQM_V0001_R000304777__HLT__FastTimerService__All.root
 
 and go to QMData/Run 304777/HLT/Run summary/TimerService/process TIMING paths/path HLT_Mu3_PFJet200CSV_1p5_v15/ directory, you can explore, e.g, the path time real plot and the module timing plot of that path
+
+## 3. HLT integration test
+
+-- to get the updated L1T menu circulated July 24th (L1Menu_Collisions2017_dev_r9) --
+(it might be run w/o L1 menu, not so crucial.)
+git clone https://github.com/cms-l1-dpg/2017-pp-menu-dev -b 2017-07-24 ../2017-pp-menu-dev
+mkdir -p L1Trigger/L1TGlobal/data/Luminosity/startup
+cp ../2017-pp-menu-dev/Apr12/*.xml L1Trigger/L1TGlobal/data/Luminosity/startup/
+
+hltIntegrationTests -s /dev/CMSSW_10_0_0/GRun -i root://xrootd-cms.infn.it//store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/00916118-3AA9-E711-9619-008CFAC93DC0.root --mc -n 1000 -x "--l1Xml L1Menu_Collisions2017_dev_r9.xml --globaltag 94X_mc2017_realistic_TSG_2017_12_19_13_49_40 --unprescale --customise HLTrigger/Configuration/customizeHLTforCMSSW.customiseFor2017DtUnpacking"  
+
+
