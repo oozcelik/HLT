@@ -55,4 +55,42 @@ cp ../2017-pp-menu-dev/Apr12/*.xml L1Trigger/L1TGlobal/data/Luminosity/startup/
 
 hltIntegrationTests -s /dev/CMSSW_10_0_0/GRun -i root://xrootd-cms.infn.it//store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/00916118-3AA9-E711-9619-008CFAC93DC0.root --mc -n 1000 -x "--l1Xml L1Menu_Collisions2017_dev_r9.xml --globaltag 94X_mc2017_realistic_TSG_2017_12_19_13_49_40 --unprescale --customise HLTrigger/Configuration/customizeHLTforCMSSW.customiseFor2017DtUnpacking"  
 
+## HLT Efficiency 
 
+// Check out the configurations of menu(s)
+hltGetConfiguration --cff --offline /dev/CMSSW_10_0_0/GRun --paths HLTriggerFirstPath,HLTriggerFinalPath --unprescale > HLT_Test_cff.py
+
+hltGetConfiguration --cff /users/oozcelik/Displaced-Jpsi/HLT --unprescale >> HLT_Test_cff.py
+
+// comment out the duplicate lines import FWCore.ParameterSet.Config as cms -- 
+fragment = cms.ProcessFragment(“HLT”) 
+
+// move the HLT_Test_cff.py to the HLTrigger/Configuration/python/ directory and compile. 
+
+// prepare a config to be run with cmsRun :
+
+cmsDriver.py TEST --step=HLT:Test --mc --conditions  94X_mc2017_realistic_TSG_2017_12_19_13_49_40 --filein /store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/AODSIM/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/28D812CB-B7AD-E711-915A-008CFAE44F30.root --secondfilein /store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/1C31836F-8FAB-E711-9F64-008CFA111174.root
+/store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/C83EA7E8-A3A9-E711-AE3C-008CFAE45058.root
+/store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/F07521ED-ACA9-E711-A9F4-008CFA197B54.root --era=Run2_2017 --processName=MYHLT   -n  -1 --no_exec
+
+// first input file to be AOD/mAOD/RECO while the second input to be RAW file and to be parent of the corresponding AOD. Therefore, one can re-run the "MYHLT" over the RAW data and compare with the AOD events.   
+
+//Modify the new TEST_HLT.py configuration :
+
+1. Add these lines to run your analyzer :
+
+process.demo = cms.EDAnalyzer('TriggerAnalyzerRAWMiniAOD')
+process.TFileService = cms.Service("TFileService",
+                                   fileName = cms.string( "RAWAOD_out.root" )
+                                   )
+process.demo_step = cms.EndPath(process.demo)
+
+2. Replace the line :
+
+process.schedule.extend([process.endjob_step,process.RECOSIMoutput_step])
+
+by :
+
+process.schedule.extend([process.endjob_step,process.demo_step])
+
+so that you can avoid from the large output of the RAW file which was re-ran with the HLT menu.
