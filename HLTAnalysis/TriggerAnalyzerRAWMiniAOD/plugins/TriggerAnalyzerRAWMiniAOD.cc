@@ -2,22 +2,8 @@
 //
 // Package:    HLTAnalysis/TriggerAnalyzerRAWMiniAOD
 // Class:      TriggerAnalyzerRAWMiniAOD
-// 
-/**\class TriggerAnalyzerRAWMiniAOD TriggerAnalyzerRAWMiniAOD.cc HLTAnalysis/TriggerAnalyzerRAWMiniAOD/plugins/TriggerAnalyzerRAWMiniAOD.cc
-
- Description: [one line class summary]
-
- Implementation:
-     [Notes on implementation]
-*/
-//
-// Original Author:  Laurent Thomas
-//         Created:  Fri, 24 Mar 2017 04:09:55 GMT
-//
-//
-
-
 // system include files
+
 #include <memory>
 #include "TEfficiency.h"
 // user include files
