@@ -2,12 +2,11 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: TEST --step=HLT:Test --mc --conditions 94X_mc2017_realistic_TSG_2017_12_19_13_49_40 --filein file:/store/mc/RunIISummer17DRStdmix/BsToJpsiPhi_BMuonFilter_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/150000/16BB5AF9-EAAB-E711-B47F-FA163E196D2C.root --customise HLTrigger/Configuration/customizeHLTforCMSSW.customiseFor2017DtUnpacking --processName=MYHLT -n 100 --no_exec
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.StandardSequences.Eras import eras
 
-process = cms.Process('MYHLT')
+process = cms.Process('MYHLT',eras.Run2_2017)
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -22,13 +21,23 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100)
+    input = cms.untracked.int32(500)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('/store/mc/RunIISummer17DRStdmix/BsToJpsiPhi_BMuonFilter_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/150000/16BB5AF9-EAAB-E711-B47F-FA163E196D2C.root'),
-    secondaryFileNames = cms.untracked.vstring()
+    fileNames = cms.untracked.vstring(
+#'/store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/AODSIM/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/28D812CB-B7AD-E711-915A-008CFAE44F30.root'
+'/store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/AODSIM/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/82747DA9-D1A9-E711-B840-008CFAC93C08.root'
+),
+    secondaryFileNames = cms.untracked.vstring(
+#'/store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/1C31836F-8FAB-E711-9F64-008CFA111174.root',
+#'/store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/C83EA7E8-A3A9-E711-AE3C-008CFAE45058.root',
+#'/store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/F07521ED-ACA9-E711-A9F4-008CFA197B54.root'
+'/store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/54BF46AD-9CA9-E711-A0DC-008CFAE45170.root',
+'/store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/7C1FF52E-ADA9-E711-B9A5-008CFAE45188.root',
+'/store/mc/RunIISummer17DRStdmix/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCUEP8M1_13TeV-pythia8-evtgen/GEN-SIM-RAW/NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/00000/CE980620-ADA9-E711-8E62-008CFAE45308.root'
+    )
 )
 
 process.options = cms.untracked.PSet(
@@ -67,15 +76,12 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_TSG_2017_
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.RECOSIMoutput_step = cms.EndPath(process.RECOSIMoutput)
 
-
 process.demo = cms.EDAnalyzer('TriggerAnalyzerRAWMiniAOD')
-
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string('test.root')
-)
-
-
+                                   fileName = cms.string( "RAWAOD_out.root" )
+                                   )
 process.demo_step = cms.EndPath(process.demo)
+
 
 # Schedule definition
 process.schedule = cms.Schedule()
@@ -86,11 +92,12 @@ associatePatAlgosToolsTask(process)
 
 # customisation of the process.
 
-# Automatic addition of the customisation function from HLTrigger.Configuration.customizeHLTforCMSSW
-from HLTrigger.Configuration.customizeHLTforCMSSW import customiseFor2017DtUnpacking 
+# Automatic addition of the customisation function from HLTrigger.Configuration.customizeHLTforMC
+from HLTrigger.Configuration.customizeHLTforMC import customizeHLTforMC 
 
-#call to customisation function customiseFor2017DtUnpacking imported from HLTrigger.Configuration.customizeHLTforCMSSW
-process = customiseFor2017DtUnpacking(process)
+#call to customisation function customizeHLTforMC imported from HLTrigger.Configuration.customizeHLTforMC
+process = customizeHLTforMC(process)
+
 # End of customisation functions
 
 # Customisation from command line
