@@ -309,8 +309,8 @@ if( !trigResults.failedToGet() ) {
 		  reco::Particle::LorentzVector MuMuP4_1, MuMuP4_2, JpsiP4;
 		  ParticleMass muon_mass = 0.10565837;
 
-		  MuMuP4_1 = reco::Particle::LorentzVector(mu1->px() , mu1->py() , mu1->pz() , muon_mass );
-		  MuMuP4_2 = reco::Particle::LorentzVector(mu2->px() , mu2->py() , mu2->pz() , muon_mass );
+		  MuMuP4_1 = reco::Particle::LorentzVector(mu1->px() , mu1->py() , mu1->pz() , mu1->energy() );
+		  MuMuP4_2 = reco::Particle::LorentzVector(mu2->px() , mu2->py() , mu2->pz() , mu2->energy() );
 
 		  JpsiP4 = MuMuP4_1 + MuMuP4_2;
 
