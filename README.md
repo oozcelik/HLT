@@ -1,4 +1,4 @@
-## 2018 HLT rate, timing and efficiency and integration studies. 
+## 2018 HLT rate, timing, efficiency and integration studies. 
 
 Commands for each step ----
 
