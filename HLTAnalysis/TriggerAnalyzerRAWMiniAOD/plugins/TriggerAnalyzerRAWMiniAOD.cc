@@ -165,6 +165,12 @@ TriggerAnalyzerRAWMiniAOD::TriggerAnalyzerRAWMiniAOD(const edm::ParameterSet& iC
   h_trackiso_HLT= fs->make<TH1F>("h_trackiso_HLT","",100,0,0.5);
   pEff = fs->make<TEfficiency >("eff","my efficiency;x;#epsilon",100,0,100);
 
+  X_One_Tree_ =0;
+  runNum =0; 
+  evtNum = 0; 
+  lumiNum = 0;
+  JMass =0;
+
 }
 
 
@@ -328,6 +334,13 @@ if( !trigResults.failedToGet() ) {
    if(passed) h_DoubleMu43_vs_leadingmuonpt_den->Fill(leadingmuonpt); ///all events that pass the offline selections.
    if(passHLT_DoubleMu43 && passedFilter) h_DoubleMu43_vs_leadingmuonpt_num->Fill(leadingmuonpt); //only events pass my HLT path.
    pEff->Fill(passedFilter, leadingmuonpt);
+	
+	
+   X_One_Tree_ ->Fill();
+   runNum =0; 
+   evtNum = 0; 
+   lumiNum = 0;
+   JMass->clear();
 }
 
 
