@@ -291,7 +291,6 @@ if( !trigResults.failedToGet() ) {
 
 		   KalmanVertexFitter jkvf;
 		   TransientVertex jtv = jkvf.vertex(j_tks);
-		   if (!jtv.isValid()) continue;
 
 		   reco::Vertex jpsivertex = jtv;
                    double dimuonCL(0);
