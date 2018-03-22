@@ -323,17 +323,16 @@ if( !trigResults.failedToGet() ) {
 		  if(JpsiP4.M()<2.9 || JpsiP4.M()>3.3) continue;
 		  if(JpsiP4.Pt()<6.9) continue;
                   leadingmuonpt = JpsiP4.Pt();
-		  npassed++;
-		  passed = true;
-		  if(passed) JMass->push_back(JpsiP4.M());
+		  JMass->push_back(JpsiP4.M());
 	   }
 
    }    
 
    //Effcy vs leading muon pt:
-   if(passed) h_DoubleMu43_vs_leadingmuonpt_den->Fill(leadingmuonpt); ///all events that pass the offline selections.
+   h_DoubleMu43_vs_leadingmuonpt_den->Fill(leadingmuonpt); ///all events that pass the offline selections.
    if(passHLT_DoubleMu43 && passedFilter) h_DoubleMu43_vs_leadingmuonpt_num->Fill(leadingmuonpt); //only events pass my HLT path.
-   pEff->Fill(passedFilter, leadingmuonpt);
+	
+   pEff->Fill(passHLT_DoubleMu43, leadingmuonpt);
 	
 	
    X_One_Tree_ ->Fill();
